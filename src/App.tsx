@@ -106,13 +106,26 @@ console.log("OFFICIAL BURN ADDRESS:", address);
 
       <main>
         <Section title="Purpose" delay={0.2}>
-          <p style={{ marginBottom: '1.5rem', fontSize: '1.1rem' }}>
-            To ensure token immutability and fixed supply, administrative permissions (including <code style={{ color: 'var(--accent)' }}>TOKEN_ADMIN_SUPPLY</code> and <code style={{ color: 'var(--accent)' }}>OWNER</code>) are transferred to a "dead wallet".
-          </p>
-          <div style={{ padding: '1.5rem', background: 'rgba(255, 77, 77, 0.05)', borderLeft: '3px solid var(--error)', borderRadius: '4px' }}>
-            <p style={{ margin: 0, color: '#ffaaaa' }}>
-              This wallet is <strong style={{ color: '#fff' }}>cryptographically unspendable</strong>. While a corresponding private key exists in theory, recovering it requires solving the <strong style={{ color: '#fff' }}>Elliptic Curve Discrete Logarithm Problem (ECDLP)</strong>—a computation so infeasible that doing so would simultaneously break Ed25519, Bitcoin, Ethereum, and the entire modern cryptographic infrastructure.
-            </p>
+          <div style={{ display: 'grid', gap: '2rem' }}>
+            <div>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: 'var(--text-dim)' }}>The Problem</h3>
+              <p style={{ marginBottom: '1rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
+                To guarantee token immutability, administrative rights must be permanently revoked. Standard "burn" methods involve generating a keypair and deleting the private key—a process that <strong style={{ color: '#fff' }}>requires trusting the creator</strong> to actually delete it.
+              </p>
+              <div style={{ padding: '1rem', borderLeft: '3px solid var(--error)', background: 'rgba(255, 77, 77, 0.05)' }}>
+                <p style={{ margin: 0, color: '#ffaaaa', fontStyle: 'italic' }}>"Trust is a vulnerability."</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: 'var(--accent)' }}>The Solution</h3>
+              <p style={{ marginBottom: '1rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
+                We eliminate trust. Instead of generating a keypair and deleting the private key, we generate the <strong style={{ color: '#fff' }}>Public Key directly from a public seed string</strong>.
+              </p>
+              <p style={{ fontSize: '1.1rem', lineHeight: '1.6', color: 'var(--text-dim)' }}>
+                By bypassing the private key generation step entirely, we create a destination that is mathematically impossible to unlock.
+              </p>
+            </div>
           </div>
         </Section>
 
@@ -191,7 +204,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
               </li>
             ))}
           </ul>
-          <div style={{ marginTop: '2rem', textAlign: 'center', padding: '1rem', border: '1px dashed var(--accent)', borderRadius: '8px', color: 'var(--accent-dim)' }}>
+          <div style={{ marginTop: '2rem', textAlign: 'center', padding: '1rem', border: '1px dashed var(--accent)', borderRadius: '8px', color: '#fff', background: 'rgba(0, 255, 157, 0.05)' }}>
             <span style={{ color: 'var(--accent)', fontWeight: 600 }}>CONCLUSION:</span> No one holds the private key. Tokens are permanently locked.
           </div>
         </Section>
