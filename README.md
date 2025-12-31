@@ -43,11 +43,16 @@ Visit [justfuckinguseburnaddress.com](https://justfuckinguseburnaddress.com/) an
 
 ## Security
 
-- **RFC 9380 Guarantee**: The Elligator2 algorithm guarantees the output is a valid Ed25519 curve point. This is IETF-standardized, not ad-hoc.
+- **RFC 9380 Guarantee**: The Elligator2 algorithm guarantees the output is a valid Ed25519 curve point (with cofactor clearing). This is IETF-standardized, not ad-hoc.
 - **Determinism**: The curve point is derived solely from the public string `KEETA_BURN_FUCKING_ADDRESS`.
 - **Discrete Log Hardness**: Finding a private key (Ed25519 scalar) that produces this public point requires solving the discrete logarithm problem—computationally infeasible.
+- **Collision Resistance**: SHA-512 provides ~256-bit collision resistance within the hash-to-curve construction.
 
-**RESULT**: No private key exists. No one can spend from this address. Tokens sent here are **permanently and irrevocably locked**.
+**Cryptographic Parameters:**
+- DST: `QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_`
+- Library: @noble/curves@1.8.1
+
+**RESULT**: No known private key exists. Tokens sent here are **permanently locked**.
 
 ---
 

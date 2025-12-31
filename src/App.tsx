@@ -14,7 +14,7 @@ const XIcon = () => (
 function App() {
   const seedString = 'KEETA_BURN_FUCKING_ADDRESS';
 
-  // RFC 9380 Hash-to-Curve derived address (the only official address)
+  // RFC 9380 Hash-to-Curve derived address (no known private key)
   const curvePointHex = '87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a';
   const address = 'keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue';
 
@@ -159,7 +159,7 @@ function App() {
             <div style={{ padding: '0.5rem 1rem', background: 'rgba(0, 255, 157, 0.1)', border: '1px solid var(--accent)', borderRadius: '4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all', color: 'var(--accent)' }}>{address}</div>
           </div>
           <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--text-dim)' }}>
-            The Elligator2 map produces a point that is <strong style={{ color: '#fff' }}>mathematically guaranteed</strong> to lie on the Edwards-25519 curve. Finding a private key (scalar) that maps to this point requires solving the discrete logarithm problem—computationally infeasible.
+            The Elligator2 map produces a point that is <strong style={{ color: '#fff' }}>mathematically guaranteed</strong> to lie on the Edwards-25519 curve (with cofactor clearing). Finding a private key (scalar) that maps to this point requires solving the discrete logarithm problem—computationally infeasible.
           </p>
         </Section>
 
@@ -202,10 +202,10 @@ function App() {
         <Section title="Security Proof" delay={0.6}>
           <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gap: '1rem' }}>
             {[
-              { title: "RFC 9380 Guarantee", desc: "The Elligator2 algorithm guarantees the output is a valid Ed25519 curve point. This is IETF-standardized, not ad-hoc." },
+              { title: "RFC 9380 Guarantee", desc: "The Elligator2 algorithm guarantees the output is a valid Ed25519 curve point (with cofactor clearing). This is IETF-standardized, not ad-hoc." },
               { title: "Determinism", desc: `The curve point is derived solely from the public string "${seedString}".` },
               { title: "Discrete Log Hardness", desc: "Finding a private key (Ed25519 scalar) that produces this public point requires solving the discrete logarithm problem—computationally infeasible." },
-              { title: "Preimage Resistance", desc: "Finding an input that produces a colliding curve point is blocked by SHA-512 preimage resistance within the hash-to-curve construction." }
+              { title: "Collision Resistance", desc: "Finding another input that produces the same curve point is blocked by SHA-512's ~256-bit collision resistance within the hash-to-curve construction." }
             ].map((item, i) => (
               <li key={i} style={{ padding: '1.5rem', background: '#111', border: '1px solid #222', borderRadius: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
@@ -217,7 +217,7 @@ function App() {
             ))}
           </ul>
           <div style={{ marginTop: '2rem', textAlign: 'center', padding: '1rem', border: '1px dashed var(--accent)', borderRadius: '8px', color: '#fff', background: 'rgba(0, 255, 157, 0.05)' }}>
-            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>RESULT:</span> No private key exists. No one can spend from this address. Tokens sent here are <strong>permanently and irrevocably locked</strong>.
+            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>RESULT:</span> No known private key exists. No one can spend from this address. Tokens sent here are <strong>permanently and irrevocably locked</strong>.
           </div>
         </Section>
 
@@ -255,8 +255,11 @@ function App() {
             </FAQItem>
 
             <FAQItem question="What about Quantum Computing?">
+              <p style={{ color: 'var(--text-dim)', lineHeight: '1.6', marginBottom: '1rem' }}>
+                Ed25519—like all elliptic curve cryptography—is <strong style={{ color: 'var(--error)' }}>theoretically vulnerable</strong> to Shor's algorithm on a sufficiently powerful quantum computer.
+              </p>
               <p style={{ color: 'var(--text-dim)', lineHeight: '1.6' }}>
-                Keeta is <strong style={{ color: 'var(--accent)' }}>Post-Quantum Ready</strong>. This network was not built for the limitations of today's silicon. While others panic, Keeta remains immutable.
+                However, such computers don't exist yet. If quantum computing matures to that level, the <strong style={{ color: '#fff' }}>entire Keeta Network</strong> (and all Ed25519-based systems) would require cryptographic migration—this burn address would be just one of many concerns.
               </p>
             </FAQItem>
 
