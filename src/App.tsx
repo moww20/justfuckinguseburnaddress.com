@@ -104,7 +104,8 @@ console.log("OFFICIAL BURN ADDRESS:", address);
             <div style={{ color: 'var(--accent)' }}>↓ SHA256</div>
             <div style={{ padding: '0.5rem 1rem', background: '#000', border: '1px solid #333', borderRadius: '4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' }}>{hashHex}</div>
             <div style={{ color: 'var(--accent)' }}>↓</div>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>Public Key (Burn Address)</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>Keeta Burn Fucking Address</div>
+            <div style={{ padding: '0.5rem 1rem', background: '#000', border: '1px solid #333', borderRadius: '4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all', color: 'var(--accent)' }}>{address}</div>
           </div>
           <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--text-dim)' }}>
             Since SHA256 is a one-way function, valid private keys (scalars) that map to this point are computationally infeasible to find. This effectively "burns" the address.
