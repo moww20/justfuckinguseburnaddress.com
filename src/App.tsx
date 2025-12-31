@@ -142,7 +142,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
 
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '1.5rem', color: 'var(--text-dim)' }}>2. Verify Address Encoding (SDK Script)</h3>
           <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
-            Run this script with the Keeta SDK to confirm the hex hash maps to the official address.
+            Save this script to a file (e.g., <code>verify.ts</code>) and run it with a TypeScript runtime (e.g., <code>npx tsx verify.ts</code>) to confirm the hash maps to the address.
           </p>
           <TerminalBlock label="typescript" content={sdkVerify} />
         </Section>
@@ -202,7 +202,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
       <footer style={{ marginTop: '8rem', textAlign: 'center', color: 'var(--text-dim)', fontSize: '0.875rem', paddingBottom: '4rem' }}>
         <p style={{ opacity: 0.5 }}>KEETA LAUNCHPAD &bull; PROVABLE BURN v1</p>
       </footer>
-    </div>
+    </div >
   );
 }
 
