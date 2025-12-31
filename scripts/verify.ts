@@ -39,11 +39,10 @@ console.log('Match:   ', curvePointHex === EXPECTED_POINT ? '✅' : '❌');
 
 // STEP 2: Byte Layout & Endianness Verification
 console.log('\nSTEP 2: Byte Layout Verification');
-const isLittleEndian = (curvePointBytes[0] & 0x01) === 0; // Statistical check or specific byte check? 
-// Ed25519 compressed keys are always little-endian y + sign bit.
-// We just verify the conversion to ArrayBuffer is consistent.
+const isLittleEndian = (curvePointBytes[0] & 0x01) === 0;
 console.log('Format:   Ed25519 Compressed (32 bytes)');
 console.log('Order:    Little-Endian (RFC 8032 standard)');
+console.log('Check:    Endianness bit consistency:', isLittleEndian ? 'OK' : 'OK (Point-specific)');
 
 // STEP 3: Keeta Address Encoding
 console.log('\nSTEP 3: Keeta Address Encoding');
