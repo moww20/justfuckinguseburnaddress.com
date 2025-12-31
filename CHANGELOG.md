@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Refactor**: Updated `verify.ts` and `derive-keeta-address.ts` to use the shared constants from `src/lib/burn-address.ts`.
 - **Derivation Fix**: Fixed a critical inconsistency where the derivation script used a different Domain Separation Tag (DST) than the production application.
 - **Documentation**: Clarified "Bech32-inspired custom encoding" to "Keeta Address Encoding" in ADR-001.
+- **Dependencies**: Pinned all dependencies in `package.json` to exact versions for reproducible builds.
 
 ### Removed
 - **Cleanup**: Deleted potentially misleading `scripts/test-derive.ts`.

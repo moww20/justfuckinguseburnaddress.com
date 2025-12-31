@@ -202,7 +202,7 @@ function App() {
           <div style={{ marginTop: '2rem' }}>
             <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>2. Command Line (Clone & Run)</h3>
             <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
-              Clone the repo and run with <code style={{ color: 'var(--accent)' }}>bun</code> or <code style={{ color: 'var(--accent)' }}>npx tsx</code>:
+              Clone the <a href="https://github.com/moww20/justfuckinguseburnaddress.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-dim)', textDecoration: 'underline' }}>repo</a> and run with <code style={{ color: 'var(--accent)' }}>bun</code> or <code style={{ color: 'var(--accent)' }}>npx tsx</code>:
             </p>
             <TerminalBlock label="bash" content={fileVerifyScript} />
           </div>
@@ -353,7 +353,7 @@ function App() {
             <XIcon />
           </a>
         </div>
-        <p style={{ opacity: 0.5, marginBottom: '0.5rem' }}>KEETA BURN FUCKING ADDRESS v1</p>
+        <p style={{ opacity: 0.5, marginBottom: '0.5rem' }}>KEETA BURN FUCKING ADDRESS v1.1.0</p>
         <p style={{ opacity: 0.3, fontSize: '0.8rem' }}>
           by <a href="https://keythings.xyz/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Keythings Wallet</a>
         </p>
