@@ -6,16 +6,33 @@ import { TerminalBlock } from './components/TerminalBlock';
 function App() {
   const seedString = 'KEETA_BURN_FUCKING_ADDRESS';
   const hashHex = '5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533';
-  const address = '0x5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533';
+  const address = 'keeta_afpfix3n6l2yuz3yucngbtwdqfd4ufwsnetv5ejawhb6akkmdssth3xh4vhhg';
 
   const bashVerify = `echo -n 'KEETA_BURN_FUCKING_ADDRESS' | sha256sum
 # Output: 5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533`;
 
-  const powershellVerify = `$Algorithm = [System.Security.Cryptography.HashAlgorithm]::Create("SHA256")
-$Bytes = [System.Text.Encoding]::UTF8.GetBytes("KEETA_BURN_FUCKING_ADDRESS")
-$Hash = $Algorithm.ComputeHash($Bytes)
-[BitConverter]::ToString($Hash).Replace("-", "").ToLower()
-# Output: 5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533`;
+
+
+  const sdkVerify = `
+import * as Anchor from "@keetanetwork/anchor";
+import { createHash } from "node:crypto";
+
+const SEED = "KEETA_BURN_FUCKING_ADDRESS";
+
+// 1. Calculate SHA256 Hash
+const hash = createHash('sha256').update(SEED).digest();
+const hashHex = hash.toString('hex');
+console.log(\`SHA256 Hash: 0x\${hashHex}\`);
+
+// 2. Derive Keeta Address
+// Using SDK to ensure strict network-compatible encoding
+const bytes = new Uint8Array(hash);
+const account = Anchor.KeetaNet.lib.Account.fromED25519PublicKey(bytes);
+const address = account.publicKeyString.get();
+
+console.log("OFFICIAL BURN ADDRESS:", address);
+// Output: keeta_afpfix3n6l2yuz3yucngbtwdqfd4ufwsnetv5ejawhb6akkmdssth3xh4vhhg
+`;
 
   return (
     <div className="manifesto-container">
@@ -84,22 +101,23 @@ $Hash = $Algorithm.ComputeHash($Bytes)
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>SHA256 Hash (Hex)</h3>
           <TerminalBlock label="hex" content={hashHex} />
 
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Keeta Address (Hex format)</h3>
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Keeta Address (Official Bech32)</h3>
           <TerminalBlock label="address" content={address} />
-          <p style={{ fontSize: '0.875rem', color: 'var(--text-dim)', fontStyle: 'italic' }}>
-            *Note: If a keeta_ prefixed address is required by the SDK, it will be the bech32 encoding of these bytes.*
-          </p>
         </Section>
 
         <Section title="How to Verify" delay={0.5}>
           <p style={{ marginBottom: '1.5rem' }}>
-            Anyone can verify that this address corresponds to the seed string using standard command-line tools.
+            Anyone can verify that this address corresponds to the seed string.
           </p>
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>On Linux/Mac</h3>
+
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>1. Verify Hash (Command Line)</h3>
           <TerminalBlock label="bash" content={bashVerify} />
 
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>On Windows (PowerShell)</h3>
-          <TerminalBlock label="powershell" content={powershellVerify} />
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '1.5rem', color: 'var(--text-dim)' }}>2. Verify Address Encoding (SDK Script)</h3>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
+            Run this script with the Keeta SDK to confirm the hex hash maps to the official address.
+          </p>
+          <TerminalBlock label="typescript" content={sdkVerify} />
         </Section>
 
         <Section title="Security Proof" delay={0.6}>
