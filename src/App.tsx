@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Lock, Github } from 'lucide-react';
 import { Section } from './components/Section';
@@ -11,6 +12,7 @@ const XIcon = () => (
 );
 
 function App() {
+  const [activeTab, setActiveTab] = useState<'windows' | 'unix'>('windows');
   const seedString = 'KEETA_BURN_FUCKING_ADDRESS';
   const hashHex = '5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533';
   const address = 'keeta_afpfix3n6l2yuz3yucngbtwdqfd4ufwsnetv5ejawhb6akkmdssth3xh4vhhg';
@@ -166,13 +168,58 @@ console.log("OFFICIAL BURN ADDRESS:", address);
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>1. Verify Hash (Command Line)</h3>
 
           <div style={{ marginBottom: '1.5rem' }}>
-            <h4 style={{ fontSize: '0.85rem', color: 'var(--text-dim)', marginBottom: '0.5rem', opacity: 0.7 }}>On Linux / macOS</h4>
-            <TerminalBlock label="bash" content={bashVerify} />
-          </div>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', borderBottom: '1px solid #333' }}>
+              <button
+                onClick={() => setActiveTab('windows')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  color: activeTab === 'windows' ? 'var(--accent)' : 'var(--text-dim)',
+                  borderBottom: activeTab === 'windows' ? '2px solid var(--accent)' : '2px solid transparent',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  transition: 'all 0.2s'
+                }}
+              >
+                Windows (PowerShell)
+              </button>
+              <button
+                onClick={() => setActiveTab('unix')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  color: activeTab === 'unix' ? 'var(--accent)' : 'var(--text-dim)',
+                  borderBottom: activeTab === 'unix' ? '2px solid var(--accent)' : '2px solid transparent',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  transition: 'all 0.2s'
+                }}
+              >
+                Linux / macOS
+              </button>
+            </div>
 
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h4 style={{ fontSize: '0.85rem', color: 'var(--text-dim)', marginBottom: '0.5rem', opacity: 0.7 }}>On Windows (PowerShell)</h4>
-            <TerminalBlock label="powershell" content={powershellVerify} />
+            {activeTab === 'windows' ? (
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <TerminalBlock label="powershell" content={powershellVerify} />
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <TerminalBlock label="bash" content={bashVerify} />
+              </motion.div>
+            )}
           </div>
 
           <div style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--accent)', borderRadius: '12px', background: 'rgba(0, 255, 157, 0.03)', position: 'relative' }}>
