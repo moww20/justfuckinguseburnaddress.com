@@ -278,18 +278,8 @@ console.log("OFFICIAL BURN ADDRESS:", address);
           >
             <XIcon />
           </a>
-          <a
-            href="https://github.com/KeetaNetwork/keetanet-client"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: '0.25rem', transition: 'color 0.2s' }}
-            title="Keeta Network SDK"
-          >
-            <ExternalLink size={16} />
-            <span style={{ fontSize: '0.75rem' }}>SDK</span>
-          </a>
         </div>
-        <p style={{ opacity: 0.5 }}>KEETA NETWORK &bull; PROVABLE BURN v1</p>
+        <p style={{ opacity: 0.5 }}>KEETA BURN FUCKING ADDRESS v1</p>
       </footer>
     </div >
   );
