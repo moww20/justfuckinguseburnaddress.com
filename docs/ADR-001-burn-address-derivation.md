@@ -9,10 +9,10 @@ We need a provable burn address for the Keeta Network where tokens sent are perm
 ## Decision
 
 ### RFC 9380 Hash-to-Curve
-- **Method**: `hashToCurve(seed)` using RFC 9380 Elligator2
 - **Seed**: `KEETA_BURN_FUCKING_ADDRESS`
-- **Curve Point**: `87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a`
-- **Address**: `keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue`
+- **DST**: `KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_`
+- **Curve Point**: `e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec`
+- **Address**: `keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56`
 
 The output is mathematically guaranteed to be a valid Ed25519 point in the prime-order subgroup. **No party possesses or can feasibly compute the private key** corresponding to this public key.
 
@@ -23,7 +23,7 @@ The output is mathematically guaranteed to be a valid Ed25519 point in the prime
 | Hash Function | SHA-512 (via XMD) |
 | Curve | Edwards25519 (birational to Curve25519) |
 | Map | Elligator2 (RFC 9380) |
-| DST | `QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_` |
+| DST | `KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_` |
 | Cofactor | 8 (cleared during mapping) |
 | Library | `@noble/curves@1.8.1` (pinned) |
 | Subgroup Order | 2^252 + 27742317777372353535851937790883648493 |
@@ -41,30 +41,30 @@ UTF-8 Bytes: 4b45455441 5f4255524e 5f4655434b 494e475f41 44445245535 3
 
 ### Step 2: RFC 9380 expand_message_xmd
 ```
-DST: "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_"
-DST Length: 52 bytes
+DST: "KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_"
+DST Length: 57 bytes
 Hash: SHA-512
 Output Length: 128 bytes (for 2 field elements)
 ```
 
 ### Step 3: Field Elements (after expand_message)
 ```
-u[0]: (internal field element from first 64 expanded bytes)
-u[1]: (internal field element from second 64 expanded bytes)
+u[0]: (Internal values derived from hash expansion)
+u[1]: (Internal values derived from hash expansion)
 ```
 
 ### Step 4: Elligator2 Map
 ```
-Point before cofactor clearing: (Edwards coordinates, internal)
+Point before cofactor clearing: (Edwards coordinates)
 Cofactor multiplication: ×8
 ```
 
 ### Step 5: Final Compressed Point
 ```
 Compressed Ed25519 Point (32 bytes, little-endian):
-87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a
+e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec
 
-Y-coordinate: 0x6a3f20b60b480a9fbb08777cd7bddebc7eb86ee80d4958fa68e256f72633cd87
+Y-coordinate: 0xec068f583047afb1c72c2907309cc54691ac6c3d35bc9a9c1a5ba9e1e0b4bce0
 X-coordinate sign bit: 0 (positive)
 ```
 
@@ -73,7 +73,7 @@ X-coordinate sign bit: 0 (positive)
 Prefix: "keeta_a"
 Payload: Ed25519 compressed point (32 bytes)
 Encoding: Bech32-inspired custom encoding
-Final: keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue
+Final: keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56
 ```
 
 ## Security Analysis
@@ -102,10 +102,10 @@ bun run scripts/verify.ts
 
 - Vulnerable to quantum computers (like all Ed25519-based systems)
 - A private key exists mathematically but is computationally infeasible to derive (~2^126 operations)
-- Uses RFC 9380 test-vector DST (library default); a custom DST would be preferred but would change the derived address
+- **Note on Migration**: We migrated from the RFC 9380 test-vector DST to a custom, domain-separated DST (`KEETA_BURN_ADDRESS-...`) for improved cryptographic hygiene. This resulted in a change of the derived address.
 
 ## Consequences
 - The address is provably unspendable by any party
 - Anyone can independently verify the derivation using the test vectors above
-- Fully IETF-standardized (RFC 9380)
+- Fully IETF-standardized (RFC 9380) with appropriate domain separation
 - Tokens sent to this address are permanently and irrevocably locked

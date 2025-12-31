@@ -11,8 +11,8 @@
 | Component | Value |
 |-----------|-------|
 | **Seed String** | `KEETA_BURN_FUCKING_ADDRESS` |
-| **Curve Point (RFC 9380)** | `87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a` |
-| **Keeta Address** | `keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue` |
+| **Curve Point (RFC 9380)** | `e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec` |
+| **Keeta Address** | `keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56` |
 
 ---
 
@@ -49,7 +49,7 @@ Visit [justfuckinguseburnaddress.com](https://justfuckinguseburnaddress.com/) an
 - **Collision Resistance**: The hash-to-curve construction provides ~128-bit security against finding two distinct inputs that map to the same curve point (birthday bound).
 
 **Cryptographic Parameters:**
-- DST: `QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_`
+- DST: `KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_`
 - Library: `@noble/curves@1.8.1` (pinned for reproducibility)
 
 **RESULT**: No party possesses or can feasibly compute the private key. Tokens sent here are **permanently locked**.

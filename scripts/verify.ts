@@ -9,13 +9,14 @@ import { lib } from '@keetanetwork/keetanet-client';
  * - Scheme: Ed25519 (RFC 8032)
  * - Hash-to-Curve: RFC 9380
  * - Suite: edwards25519_XMD:SHA-512_ELL2_RO_
- * - DST: "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_"
+ * - DST: "KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_"
  * - Library: @noble/curves@1.8.1 (pinned for reproducibility)
  */
 
 const SEED = 'KEETA_BURN_FUCKING_ADDRESS';
-const EXPECTED_POINT = '87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a';
-const EXPECTED_ADDRESS = 'keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue';
+const DST = 'KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_';
+const EXPECTED_POINT = 'e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec';
+const EXPECTED_ADDRESS = 'keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56';
 
 console.log('\n============================================');
 console.log('  KEETA BURN ADDRESS DERIVATION PROOF');
@@ -26,10 +27,11 @@ console.log(`  "${SEED}"\n`);
 
 // STEP 1: RFC 9380 Hash-to-Curve (Elligator2)
 console.log('STEP 1: RFC 9380 Hash-to-Curve');
-console.log('  Suite: edwards25519_XMD:SHA-512_ELL2_RO_');
+console.log(`  Suite: edwards25519_XMD:SHA-512_ELL2_RO_`);
+console.log(`  DST:   "${DST}"`);
 console.log('  (Internal: Includes cofactor clearing and expansion via SHA-512)');
 
-const point = ed25519_hasher.hashToCurve(new TextEncoder().encode(SEED));
+const point = ed25519_hasher.hashToCurve(new TextEncoder().encode(SEED), { DST });
 const curvePointHex = point.toHex();
 const curvePointBytes = point.toBytes();
 

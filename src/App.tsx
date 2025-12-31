@@ -15,8 +15,8 @@ function App() {
   const seedString = 'KEETA_BURN_FUCKING_ADDRESS';
 
   // RFC 9380 Hash-to-Curve derived address (no known private key)
-  const curvePointHex = '87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a';
-  const address = 'keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue';
+  const curvePointHex = 'e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec';
+  const address = 'keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56';
 
   // Browser console verification script - FULL end-to-end verification
   const consoleVerifyScript = `// Paste this in your browser's Developer Console (F12)
@@ -31,8 +31,9 @@ function App() {
   const lib = keetaMod.default.lib;
   
   const SEED = "KEETA_BURN_FUCKING_ADDRESS";
-  const EXPECTED_POINT = "87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a";
-  const EXPECTED_ADDRESS = "keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue";
+  const DST = "KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_";
+  const EXPECTED_POINT = "e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec";
+  const EXPECTED_ADDRESS = "keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56";
   
   console.log("\\n============================================");
   console.log("  KEETA BURN ADDRESS DERIVATION PROOF");
@@ -47,10 +48,10 @@ function App() {
   console.log("\\nSTEP 2: RFC 9380 Hash-to-Curve (Elligator2)");
   console.log("─────────────────────────────────────────");
   console.log("Suite: edwards25519_XMD:SHA-512_ELL2_RO_");
-  console.log("DST:   QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_");
+  console.log("DST:   " + DST);
   
   const encoder = new TextEncoder();
-  const point = hashToCurve(encoder.encode(SEED));
+  const point = hashToCurve(encoder.encode(SEED), { DST });
   const curvePointBytes = point.toRawBytes();
   const curvePointHex = bytesToHex(curvePointBytes);
   console.log("Output:  ", curvePointHex);
@@ -158,7 +159,7 @@ function App() {
             <div style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>Seed String</div>
             <div style={{ padding: '0.5rem 1rem', background: '#000', border: '1px solid #333', borderRadius: '4px', fontFamily: 'var(--font-mono)' }}>{seedString}</div>
             <div style={{ color: 'var(--accent)' }}>↓ RFC 9380 Elligator2</div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>(XMD:SHA-512 + Elligator2 Map)</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>(XMD:SHA-512 + Custom DST + Elligator2 Map)</div>
             <div style={{ padding: '0.5rem 1rem', background: '#000', border: '1px solid #333', borderRadius: '4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' }}>{curvePointHex}</div>
             <div style={{ color: 'var(--accent)' }}>↓ Keeta Encoding</div>
             <div style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>Keeta Burn Fucking Address</div>
