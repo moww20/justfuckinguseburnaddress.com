@@ -2,6 +2,9 @@
 
 > **The cryptographic derivation of the Keeta Network Dead Wallet.**
 
+![Build Status](https://github.com/moww20/justfuckinguseburnaddress.com/actions/workflows/verify.yml/badge.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 🔗 **Live Site**: [justfuckinguseburnaddress.com](https://justfuckinguseburnaddress.com/)
 
 ---
@@ -90,5 +93,5 @@ MIT
 
 ---
 
-**KEETA BURN FUCKING ADDRESS v1.0.0**  
+**KEETA BURN FUCKING ADDRESS v1.1.0**  
 by [Keythings Wallet](https://keythings.xyz/)
