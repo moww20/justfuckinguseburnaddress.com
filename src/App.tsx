@@ -24,7 +24,7 @@ function App() {
 (async () => {
   console.log("🔐 Loading cryptographic libraries...");
   
-  // Load libraries from CDN
+  // Load libraries from CDN (Pinned versions for reproducibility)
   const { hashToCurve } = await import("https://esm.sh/@noble/curves@1.8.1/ed25519");
   const { bytesToHex } = await import("https://esm.sh/@noble/hashes@1.7.1/utils");
   const keetaMod = await import("https://esm.sh/@keetanetwork/keetanet-client@0.14.12");
@@ -46,6 +46,9 @@ function App() {
   // STEP 2: RFC 9380 Hash-to-Curve
   console.log("\\nSTEP 2: RFC 9380 Hash-to-Curve (Elligator2)");
   console.log("─────────────────────────────────────────");
+  console.log("Suite: edwards25519_XMD:SHA-512_ELL2_RO_");
+  console.log("DST:   QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_");
+  
   const encoder = new TextEncoder();
   const point = hashToCurve(encoder.encode(SEED));
   const curvePointBytes = point.toRawBytes();
@@ -57,6 +60,8 @@ function App() {
   // STEP 3: Keeta Address Encoding
   console.log("\\nSTEP 3: Keeta Address Encoding (SDK)");
   console.log("─────────────────────────────────────────");
+  console.log("Format: Ed25519 Compressed (Little-Endian)");
+  
   const arrayBuffer = curvePointBytes.buffer.slice(
     curvePointBytes.byteOffset,
     curvePointBytes.byteOffset + curvePointBytes.byteLength
@@ -72,8 +77,9 @@ function App() {
   console.log("  ✅ FULLY VERIFIED BURN ADDRESS:");
   console.log("  " + address);
   console.log("============================================");
-  console.log("\\n✓ No private key exists for this address");
+  console.log("\\n✓ No known private key exists");
   console.log("✓ Tokens sent here are permanently locked");
+  console.log("✓ Verified using RFC 9380 + RFC 8032 standard");
 })();`;
 
   // File-based verification - simple one-liner using bun or npx

@@ -4,7 +4,7 @@
 **Accepted**
 
 ## Context
-We need a provable burn address for the Keeta Network where tokens sent are permanently locked with no private key.
+We need a provable burn address for the Keeta Network where tokens sent are permanently locked with no known private key.
 
 ## Decision
 
