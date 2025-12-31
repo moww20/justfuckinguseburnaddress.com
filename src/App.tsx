@@ -283,7 +283,7 @@ function App() {
             <FAQItem question="The All-Zeros Dilemma">
               <p style={{ color: 'var(--text-dim)', marginBottom: '1rem', lineHeight: '1.6' }}>
                 Some argue that an Ed25519 public key of <code style={{ color: 'var(--accent)' }}>0x00...00</code> (32 zero bytes) is "provably unspendable."
-                This is <strong style={{ color: 'var(--error)' }}>weaker and less provable</strong> than the Hash-to-Point method.
+                This is <strong style={{ color: 'var(--error)' }}>weaker and less provable</strong> than the Hash-to-Curve method.
               </p>
 
               <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
@@ -292,7 +292,7 @@ function App() {
                     <tr style={{ borderBottom: '1px solid #333' }}>
                       <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--text-dim)' }}>Aspect</th>
                       <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--error)' }}>All-Zeros Key</th>
-                      <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--accent)' }}>Hash-to-Point</th>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--accent)' }}>Hash-to-Curve</th>
                     </tr>
                   </thead>
                   <tbody>
