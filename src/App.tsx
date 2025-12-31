@@ -308,6 +308,73 @@ console.log("OFFICIAL BURN ADDRESS:", address);
                 Keeta is <strong style={{ color: 'var(--accent)' }}>Post-Quantum Ready</strong>. This network was not built for the limitations of today's silicon. While others panic, Keeta remains immutable.
               </p>
             </div>
+
+            <div style={{ borderTop: '1px solid #333', paddingTop: '2rem' }}>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: '#fff' }}>
+                The All-Zeros Dilemma
+              </h3>
+              <p style={{ color: 'var(--text-dim)', marginBottom: '1rem', lineHeight: '1.6' }}>
+                Some argue that an Ed25519 public key of <code style={{ color: 'var(--accent)' }}>0x00...00</code> (32 zero bytes) is "provably unspendable."
+                This is <strong style={{ color: 'var(--error)' }}>weaker and less provable</strong> than the Hash-to-Point method.
+              </p>
+
+              <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid #333' }}>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--text-dim)' }}>Aspect</th>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--error)' }}>All-Zeros Key</th>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--accent)' }}>Hash-to-Point</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style={{ borderBottom: '1px solid #222' }}>
+                      <td style={{ padding: '0.75rem', color: 'var(--text-dim)' }}>Derivation</td>
+                      <td style={{ padding: '0.75rem', color: '#ffaaaa' }}>"Magic constant"</td>
+                      <td style={{ padding: '0.75rem', color: '#aaffaa' }}>SHA256(public seed)</td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid #222' }}>
+                      <td style={{ padding: '0.75rem', color: 'var(--text-dim)' }}>Verifiability</td>
+                      <td style={{ padding: '0.75rem', color: '#ffaaaa' }}>Trust required</td>
+                      <td style={{ padding: '0.75rem', color: '#aaffaa' }}>Anyone can verify</td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid #222' }}>
+                      <td style={{ padding: '0.75rem', color: 'var(--text-dim)' }}>Transparency</td>
+                      <td style={{ padding: '0.75rem', color: '#ffaaaa' }}>Opaque</td>
+                      <td style={{ padding: '0.75rem', color: '#aaffaa' }}>Fully transparent</td>
+                    </tr>
+                    <tr>
+                      <td style={{ padding: '0.75rem', color: 'var(--text-dim)' }}>Pre-computation Risk</td>
+                      <td style={{ padding: '0.75rem', color: '#ffaaaa' }}>"Famous" point</td>
+                      <td style={{ padding: '0.75rem', color: '#aaffaa' }}>Unpredictable hash</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ background: '#111', padding: '1.5rem', borderRadius: '8px', border: '1px solid #222' }}>
+                <p style={{ marginBottom: '1rem', fontSize: '0.95rem' }}>
+                  <strong style={{ color: '#fff' }}>The Core Problem:</strong>
+                </p>
+                <ul style={{ paddingLeft: '1.5rem', color: 'var(--text-dim)', fontSize: '0.9rem', lineHeight: '1.7' }}>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    <strong>It's a "Famous" Point:</strong> The curve point where y = 0 is a well-known mathematical curiosity studied by cryptographers.
+                  </li>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    <strong>No Transparent Derivation:</strong> There's no "recipe" to verify. It's just "trust me, all-zeros is unspendable."
+                  </li>
+                  <li>
+                    <strong>Philosophical Weakness:</strong> The all-zeros approach requires trust that no one has ever found (or ever will find) a scalar for the (√-1, 0) point.
+                  </li>
+                </ul>
+              </div>
+
+              <div style={{ marginTop: '1.5rem', padding: '1rem', borderLeft: '3px solid var(--accent)', background: 'rgba(0, 255, 157, 0.05)' }}>
+                <p style={{ margin: 0, color: '#fff', fontStyle: 'italic' }}>
+                  "Show me the derivation. Show me <em>why</em> all-zeros is unspendable. I can show you <em>exactly</em> why my address is unspendable — it's the SHA256 hash of a public string, and recovering the private key requires breaking elliptic curve cryptography."
+                </p>
+              </div>
+            </div>
           </div>
         </Section>
       </main>
