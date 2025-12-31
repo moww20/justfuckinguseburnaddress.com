@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ShieldCheck, Lock, Github, ExternalLink } from 'lucide-react';
+import { ShieldCheck, Lock, Github } from 'lucide-react';
 import { Section } from './components/Section';
 import { TerminalBlock } from './components/TerminalBlock';
 
@@ -175,11 +175,16 @@ console.log("OFFICIAL BURN ADDRESS:", address);
             <TerminalBlock label="powershell" content={powershellVerify} />
           </div>
 
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '1.5rem', color: 'var(--text-dim)' }}>2. Verify Hash in Browser Console (Zero Setup)</h3>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
-            Open your browser's Developer Tools (F12), go to the <strong>Console</strong> tab, and paste this script. It uses the built-in Web Crypto API—no installation required.
-          </p>
-          <TerminalBlock label="javascript" content={consoleVerify} />
+          <div style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--accent)', borderRadius: '12px', background: 'rgba(0, 255, 157, 0.03)', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: '-10px', right: '20px', background: 'var(--accent)', color: '#000', padding: '2px 10px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700 }}>
+              EASIEST METHOD
+            </div>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: '#fff' }}>2. Verify Hash in Browser Console (Zero Setup)</h3>
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-dim)', marginBottom: '1rem' }}>
+              Open your browser's Developer Tools (F12), go to the <strong>Console</strong> tab, and paste this script. It uses the built-in Web Crypto API—no installation required.
+            </p>
+            <TerminalBlock label="javascript" content={consoleVerify} />
+          </div>
 
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '2rem', color: 'var(--text-dim)' }}>3. Full Verification with SDK (Optional)</h3>
           <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
