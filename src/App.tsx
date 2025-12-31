@@ -104,7 +104,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
           </p>
           <div style={{ padding: '1.5rem', background: 'rgba(255, 77, 77, 0.05)', borderLeft: '3px solid var(--error)', borderRadius: '4px' }}>
             <p style={{ margin: 0, color: '#ffaaaa' }}>
-              This wallet must be <strong style={{ color: '#fff' }}>provably unspendable</strong>—while a private key mathematically exists, <strong style={{ color: '#fff' }}>no one knows it</strong>, and finding it would require breaking the cryptography that secures the entire network.
+              This wallet is <strong style={{ color: '#fff' }}>cryptographically unspendable</strong>. While a corresponding private key exists in theory, recovering it requires solving the <strong style={{ color: '#fff' }}>Elliptic Curve Discrete Logarithm Problem (ECDLP)</strong>—a computation so infeasible that doing so would simultaneously break Ed25519, Bitcoin, Ethereum, and the entire modern cryptographic infrastructure.
             </p>
           </div>
         </Section>
