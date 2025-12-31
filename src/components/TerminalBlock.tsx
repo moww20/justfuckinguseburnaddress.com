@@ -1,5 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Check, Copy, Terminal } from 'lucide-react';
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-bash';
 
 interface TerminalBlockProps {
     label?: string;
@@ -9,14 +14,35 @@ interface TerminalBlockProps {
     maxHeight?: string;
 }
 
+// Map label to Prism language
+const labelToLanguage: Record<string, string> = {
+    'javascript': 'javascript',
+    'typescript': 'typescript',
+    'bash': 'bash',
+    'text': 'text',
+    'address': 'text',
+    'curve point': 'text',
+    'ADDRESS': 'text',
+};
+
 export function TerminalBlock({ label = 'bash', content, allowCopy = true, maxHeight }: TerminalBlockProps) {
     const [copied, setCopied] = useState(false);
+    const codeRef = useRef<HTMLElement>(null);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(content);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
+
+    // Apply Prism highlighting
+    useEffect(() => {
+        if (codeRef.current) {
+            Prism.highlightElement(codeRef.current);
+        }
+    }, [content]);
+
+    const prismLanguage = labelToLanguage[label.toLowerCase()] || 'javascript';
 
     return (
         <div className="terminal-block" style={{
@@ -26,7 +52,7 @@ export function TerminalBlock({ label = 'bash', content, allowCopy = true, maxHe
             overflow: 'hidden',
             marginBottom: '1.5rem',
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.9rem'
+            fontSize: '0.85rem'
         }}>
             <div style={{
                 display: 'flex',
@@ -64,9 +90,17 @@ export function TerminalBlock({ label = 'bash', content, allowCopy = true, maxHe
                     </button>
                 )}
             </div>
-            <div style={{ padding: '1rem', overflowX: 'auto', overflowY: maxHeight ? 'auto' : 'visible', maxHeight: maxHeight || 'none', color: 'var(--text-main)' }}>
-                <pre style={{ margin: 0 }}>
-                    <code>{content}</code>
+            <div style={{
+                padding: '1rem',
+                overflowX: 'auto',
+                overflowY: maxHeight ? 'auto' : 'visible',
+                maxHeight: maxHeight || 'none',
+                background: '#1d1f21'
+            }}>
+                <pre style={{ margin: 0, background: 'transparent' }}>
+                    <code ref={codeRef} className={`language-${prismLanguage}`}>
+                        {content}
+                    </code>
                 </pre>
             </div>
         </div>
