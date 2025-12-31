@@ -140,6 +140,36 @@ console.log("OFFICIAL BURN ADDRESS:", address);
             <span style={{ color: 'var(--accent)', fontWeight: 600 }}>CONCLUSION:</span> No one holds the private key. Tokens are permanently locked.
           </div>
         </Section>
+
+        <Section title="FAQ" delay={0.7}>
+          <div style={{ display: 'grid', gap: '2rem' }}>
+            <div>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: '#fff' }}>
+                What if someone uses the seed string as a wallet seed phrase?
+              </h3>
+              <p style={{ color: 'var(--text-dim)', marginBottom: '1rem' }}>
+                It is <strong style={{ color: 'var(--accent)' }}>completely safe</strong>. Access to the Burn Address would not be compromised.
+              </p>
+              <div style={{ background: '#111', padding: '1.5rem', borderRadius: '8px', border: '1px solid #222' }}>
+                <p style={{ marginBottom: '1rem', fontSize: '0.95rem' }}>
+                  <strong style={{ color: '#fff' }}>The Technical Reason:</strong>
+                </p>
+                <ul style={{ paddingLeft: '1.5rem', color: 'var(--text-dim)', fontSize: '0.9rad' }}>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    <strong>Standard Wallets:</strong> Convert <code>Seed String</code> → <code>Private Key</code> → <code>Public Key</code> (Address A).
+                  </li>
+                  <li>
+                    <strong>This Burn Address:</strong> Converts <code>Seed String</code> → <code>Public Key</code> (Address B) directly.
+                  </li>
+                </ul>
+                <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-dim)', fontStyle: 'italic' }}>
+                  For Address A to equal Address B, the Private Key would have to mathematically equal the Public Key, which is cryptographically impossible.
+                  Using the seed string in a wallet will simply generate a random, empty wallet address that has no relation to the Burn Address.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Section>
       </main>
 
       <footer style={{ marginTop: '8rem', textAlign: 'center', color: 'var(--text-dim)', fontSize: '0.875rem', paddingBottom: '4rem' }}>
