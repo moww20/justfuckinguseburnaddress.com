@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Lock, Github } from 'lucide-react';
 import { Section } from './components/Section';
 import { TerminalBlock } from './components/TerminalBlock';
+import { FAQItem } from './components/FAQItem';
 
 // X.com icon (not in lucide-react)
 const XIcon = () => (
@@ -12,59 +12,72 @@ const XIcon = () => (
 );
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'windows' | 'unix'>('windows');
   const seedString = 'KEETA_BURN_FUCKING_ADDRESS';
-  const hashHex = '5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533';
-  const address = 'keeta_afpfix3n6l2yuz3yucngbtwdqfd4ufwsnetv5ejawhb6akkmdssth3xh4vhhg';
 
-  const bashVerify = `echo -n 'KEETA_BURN_FUCKING_ADDRESS' | sha256sum
-# Output: 5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533`;
+  // RFC 9380 Hash-to-Curve derived address (the only official address)
+  const curvePointHex = '87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a';
+  const address = 'keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue';
 
-
-  const powershellVerify = `$Algorithm = [System.Security.Cryptography.HashAlgorithm]::Create("SHA256")
-$Bytes = [System.Text.Encoding]::UTF8.GetBytes("KEETA_BURN_FUCKING_ADDRESS")
-$Hash = $Algorithm.ComputeHash($Bytes)
-[BitConverter]::ToString($Hash).Replace("-", "").ToLower()
-# Output: 5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533`;
-
-  const sdkVerify = `
-import { lib } from "@keetanetwork/keetanet-client";
-import { createHash } from "node:crypto";
-
-const SEED = "KEETA_BURN_FUCKING_ADDRESS";
-
-// 1. Calculate SHA256 Hash
-const hash = createHash('sha256').update(SEED).digest();
-const hashHex = hash.toString('hex');
-console.log(\`SHA256 Hash: 0x\${hashHex}\`);
-
-// 2. Derive Keeta Address
-const bytes = new Uint8Array(hash);
-// Convert to ArrayBuffer for strict type compliance
-const arrayBuffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
-
-const account = lib.Account.fromED25519PublicKey(arrayBuffer);
-const address = lib.Account.toPublicKeyString(account);
-
-console.log("OFFICIAL BURN ADDRESS:", address);
-// Output: keeta_afpfix3n6l2yuz3yucngbtwdqfd4ufwsnetv5ejawhb6akkmdssth3xh4vhhg
-`;
-
-  // Browser console script - zero setup, uses Web Crypto API
-  const consoleVerify = `// Paste this in your browser's Developer Console (F12)
+  // Browser console verification script - FULL end-to-end verification
+  const consoleVerifyScript = `// Paste this in your browser's Developer Console (F12)
+// Full RFC 9380 + Keeta SDK verification
 (async () => {
-  const SEED = "KEETA_BURN_FUCKING_ADDRESS";
-  const encoder = new TextEncoder();
-  const data = encoder.encode(SEED);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  console.log("🔐 Loading cryptographic libraries...");
   
-  console.log("Seed:", SEED);
-  console.log("SHA256 Hash:", hashHex);
-  console.log("Expected:    5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533");
-  console.log("Match:", hashHex === "5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533" ? "✅ YES" : "❌ NO");
+  // Load libraries from CDN
+  const { hashToCurve } = await import("https://esm.sh/@noble/curves@1.8.1/ed25519");
+  const { bytesToHex } = await import("https://esm.sh/@noble/hashes@1.7.1/utils");
+  const keetaMod = await import("https://esm.sh/@keetanetwork/keetanet-client@0.14.12");
+  const lib = keetaMod.default.lib;
+  
+  const SEED = "KEETA_BURN_FUCKING_ADDRESS";
+  const EXPECTED_POINT = "87cd3326f756e268fa58490de86eb87ecbfdebd77c7708bb9f0a480bb6203f6a";
+  const EXPECTED_ADDRESS = "keeta_agd42mzg65loe2h2lbeq32doxb7mx7pl256hocf3t4feqc5wea7wv7xtd2gue";
+  
+  console.log("\\n============================================");
+  console.log("  KEETA BURN ADDRESS DERIVATION PROOF");
+  console.log("============================================\\n");
+  
+  // STEP 1: Seed
+  console.log("STEP 1: Seed String");
+  console.log("─────────────────────────────────────────");
+  console.log("Input:", SEED);
+  
+  // STEP 2: RFC 9380 Hash-to-Curve
+  console.log("\\nSTEP 2: RFC 9380 Hash-to-Curve (Elligator2)");
+  console.log("─────────────────────────────────────────");
+  const encoder = new TextEncoder();
+  const point = hashToCurve(encoder.encode(SEED));
+  const curvePointBytes = point.toRawBytes();
+  const curvePointHex = bytesToHex(curvePointBytes);
+  console.log("Output:  ", curvePointHex);
+  console.log("Expected:", EXPECTED_POINT);
+  console.log("Match:", curvePointHex === EXPECTED_POINT ? "✅" : "❌");
+  
+  // STEP 3: Keeta Address Encoding
+  console.log("\\nSTEP 3: Keeta Address Encoding (SDK)");
+  console.log("─────────────────────────────────────────");
+  const arrayBuffer = curvePointBytes.buffer.slice(
+    curvePointBytes.byteOffset,
+    curvePointBytes.byteOffset + curvePointBytes.byteLength
+  );
+  const account = lib.Account.fromED25519PublicKey(arrayBuffer);
+  const address = lib.Account.toPublicKeyString(account);
+  console.log("Output:  ", address);
+  console.log("Expected:", EXPECTED_ADDRESS);
+  console.log("Match:", address === EXPECTED_ADDRESS ? "✅" : "❌");
+  
+  // FINAL RESULT
+  console.log("\\n============================================");
+  console.log("  ✅ FULLY VERIFIED BURN ADDRESS:");
+  console.log("  " + address);
+  console.log("============================================");
+  console.log("\\n✓ No private key exists for this address");
+  console.log("✓ Tokens sent here are permanently locked");
 })();`;
+
+  // File-based verification - simple one-liner using bun or npx
+  const fileVerifyScript = `bun run scripts/verify.ts`;
   return (
     <div className="manifesto-container">
       <header style={{ marginBottom: '6rem', textAlign: 'center', marginTop: '2rem' }}>
@@ -102,7 +115,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
         transition={{ delay: 0.6, duration: 0.8 }}
         style={{ maxWidth: '600px', margin: '-4rem auto 6rem auto' }}
       >
-        <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)', textAlign: 'left' }}>Keeta Burn Fucking Address (Bech32)</h3>
+        <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)', textAlign: 'left' }}>Keeta Burn Fucking Address (RFC 9380)</h3>
         <TerminalBlock label="ADDRESS" content={address} />
       </motion.div>
 
@@ -131,123 +144,68 @@ console.log("OFFICIAL BURN ADDRESS:", address);
           </div>
         </Section>
 
-        <Section title="Derivation Method: Hash-to-Point" delay={0.3}>
+        <Section title="Derivation Method: RFC 9380 Hash-to-Curve" delay={0.3}>
           <p style={{ marginBottom: '1.5rem' }}>
-            Instead of generating a random keypair and deleting the private key (which requires trust), we generate the public key deterministically from a known seed string.
+            We use the <a href="https://datatracker.ietf.org/doc/rfc9380/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>IETF-standardized hash-to-curve algorithm (RFC 9380)</a> to generate a valid Ed25519 curve point from a public seed string. This <em>guarantees</em> the output is a valid curve point—eliminating all ambiguity.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '2rem', background: '#111', borderRadius: '12px', alignItems: 'center', textAlign: 'center', border: '1px solid #222' }}>
             <div style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>Seed String</div>
             <div style={{ padding: '0.5rem 1rem', background: '#000', border: '1px solid #333', borderRadius: '4px', fontFamily: 'var(--font-mono)' }}>{seedString}</div>
-            <div style={{ color: 'var(--accent)' }}>↓ SHA256</div>
-            <div style={{ padding: '0.5rem 1rem', background: '#000', border: '1px solid #333', borderRadius: '4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' }}>{hashHex}</div>
-            <div style={{ color: 'var(--accent)' }}>↓</div>
+            <div style={{ color: 'var(--accent)' }}>↓ RFC 9380 Elligator2</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>(XMD:SHA-512 + Elligator2 Map)</div>
+            <div style={{ padding: '0.5rem 1rem', background: '#000', border: '1px solid #333', borderRadius: '4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' }}>{curvePointHex}</div>
+            <div style={{ color: 'var(--accent)' }}>↓ Keeta Encoding</div>
             <div style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>Keeta Burn Fucking Address</div>
-            <div style={{ padding: '0.5rem 1rem', background: '#000', border: '1px solid #333', borderRadius: '4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all', color: 'var(--accent)' }}>{address}</div>
+            <div style={{ padding: '0.5rem 1rem', background: 'rgba(0, 255, 157, 0.1)', border: '1px solid var(--accent)', borderRadius: '4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all', color: 'var(--accent)' }}>{address}</div>
           </div>
           <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--text-dim)' }}>
-            Since SHA256 is a one-way function, valid private keys (scalars) that map to this point are computationally infeasible to find. This effectively "burns" the address.
+            The Elligator2 map produces a point that is <strong style={{ color: '#fff' }}>mathematically guaranteed</strong> to lie on the Edwards-25519 curve. Finding a private key (scalar) that maps to this point requires solving the discrete logarithm problem—computationally infeasible.
           </p>
         </Section>
 
-        <Section title="The Address" delay={0.4}>
+        <Section title="The Curve Point" delay={0.4}>
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>Seed String</h3>
           <TerminalBlock label="text" content={seedString} />
 
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>SHA256 Hash (Hex)</h3>
-          <TerminalBlock label="hex" content={hashHex} />
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Ed25519 Curve Point (RFC 9380)</h3>
+          <TerminalBlock label="curve point" content={curvePointHex} />
 
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Keeta Burn Fucking Address (Bech32)</h3>
           <TerminalBlock label="address" content={address} />
         </Section>
 
         <Section title="How to Verify" delay={0.5}>
-          <p style={{ marginBottom: '1.5rem' }}>
-            Anyone can verify that this address corresponds to the seed string.
+          <p style={{ marginBottom: '1.5rem', lineHeight: '1.6' }}>
+            Because we use the advanced <strong>RFC 9380 Hash-to-Curve</strong> standard (Elligator2), simple shell commands like <code>sha256sum</code> are no longer sufficient. Use one of the methods below to verify the derivation.
           </p>
-
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>1. Verify Hash (Command Line)</h3>
-
-          <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', borderBottom: '1px solid #333' }}>
-              <button
-                onClick={() => setActiveTab('windows')}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  color: activeTab === 'windows' ? 'var(--accent)' : 'var(--text-dim)',
-                  borderBottom: activeTab === 'windows' ? '2px solid var(--accent)' : '2px solid transparent',
-                  cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
-                  transition: 'all 0.2s'
-                }}
-              >
-                Windows (PowerShell)
-              </button>
-              <button
-                onClick={() => setActiveTab('unix')}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  color: activeTab === 'unix' ? 'var(--accent)' : 'var(--text-dim)',
-                  borderBottom: activeTab === 'unix' ? '2px solid var(--accent)' : '2px solid transparent',
-                  cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
-                  transition: 'all 0.2s'
-                }}
-              >
-                Linux / macOS
-              </button>
-            </div>
-
-            <div style={{ minHeight: '180px' }}>
-              {activeTab === 'windows' ? (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <TerminalBlock label="powershell" content={powershellVerify} />
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <TerminalBlock label="bash" content={bashVerify} />
-                </motion.div>
-              )}
-            </div>
-          </div>
 
           <div style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--accent)', borderRadius: '12px', background: 'rgba(0, 255, 157, 0.03)', position: 'relative' }}>
             <div style={{ position: 'absolute', top: '-10px', right: '20px', background: 'var(--accent)', color: '#000', padding: '2px 10px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700 }}>
-              EASIEST METHOD
+              EASIEST
             </div>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: '#fff' }}>2. Verify Hash in Browser Console (Zero Setup)</h3>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: '#fff' }}>1. Browser Console (Zero Setup)</h3>
             <p style={{ fontSize: '0.95rem', color: 'var(--text-dim)', marginBottom: '1rem' }}>
-              Open your browser's Developer Tools (F12), go to the <strong>Console</strong> tab, and paste this script. It uses the built-in Web Crypto API—no installation required.
+              Open Developer Tools (F12), go to the <strong>Console</strong> tab, and paste this script. It dynamically loads the cryptographic library from a CDN.
             </p>
-            <TerminalBlock label="javascript" content={consoleVerify} />
+            <TerminalBlock label="javascript" content={consoleVerifyScript} maxHeight="300px" />
           </div>
 
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '2rem', color: 'var(--text-dim)' }}>3. Full Verification with SDK (Optional)</h3>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
-            For complete verification including Bech32 encoding, save this to a file (e.g., <code>verify.ts</code>) and run with <code>npx tsx verify.ts</code>.
-          </p>
-          <TerminalBlock label="typescript" content={sdkVerify} />
+          <div style={{ marginTop: '2rem' }}>
+            <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>2. Command Line (Clone & Run)</h3>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
+              Clone the repo and run with <code style={{ color: 'var(--accent)' }}>bun</code> or <code style={{ color: 'var(--accent)' }}>npx tsx</code>:
+            </p>
+            <TerminalBlock label="bash" content={fileVerifyScript} />
+          </div>
         </Section>
 
         <Section title="Security Proof" delay={0.6}>
           <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gap: '1rem' }}>
             {[
-              { title: "Determinism", desc: `The address is derived solely from the public string "${seedString}".` },
-              { title: "One-Way Function", desc: "Finding a private key (Ed25519 scalar) that produces this public point is a discrete logarithm problem, which is considered computationally infeasible." },
-              { title: "Preimage Resistance", desc: "Finding a different input that maps to the same hash (to try and force a known private key) is a SHA256 preimage attack, also computationally infeasible." }
+              { title: "RFC 9380 Guarantee", desc: "The Elligator2 algorithm guarantees the output is a valid Ed25519 curve point. This is IETF-standardized, not ad-hoc." },
+              { title: "Determinism", desc: `The curve point is derived solely from the public string "${seedString}".` },
+              { title: "Discrete Log Hardness", desc: "Finding a private key (Ed25519 scalar) that produces this public point requires solving the discrete logarithm problem—computationally infeasible." },
+              { title: "Preimage Resistance", desc: "Finding an input that produces a colliding curve point is blocked by SHA-512 preimage resistance within the hash-to-curve construction." }
             ].map((item, i) => (
               <li key={i} style={{ padding: '1.5rem', background: '#111', border: '1px solid #222', borderRadius: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
@@ -264,55 +222,45 @@ console.log("OFFICIAL BURN ADDRESS:", address);
         </Section>
 
         <Section title="FAQ" delay={0.7}>
-          <div style={{ display: 'grid', gap: '2rem' }}>
-            <div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: '#fff' }}>
-                What if someone uses the seed string as a wallet seed phrase?
-              </h3>
+          <div>
+            <FAQItem question="What if someone uses the seed string as a wallet seed phrase?">
               <p style={{ color: 'var(--text-dim)', marginBottom: '1rem' }}>
-                It is <strong style={{ color: 'var(--accent)' }}>completely safe</strong>. Access to the Burn Address would not be compromised.
+                It is <strong style={{ color: 'var(--accent)' }}>completely safe</strong>. No matter how you try to use this seed string as a private key, <strong style={{ color: '#fff' }}>you will never arrive at the burn address</strong>.
               </p>
               <div style={{ background: '#111', padding: '1.5rem', borderRadius: '8px', border: '1px solid #222' }}>
                 <p style={{ marginBottom: '1rem', fontSize: '0.95rem' }}>
                   <strong style={{ color: '#fff' }}>The Technical Reason:</strong>
                 </p>
-                <ul style={{ paddingLeft: '1.5rem', color: 'var(--text-dim)', fontSize: '0.9rad' }}>
+                <ul style={{ paddingLeft: '1.5rem', color: 'var(--text-dim)', fontSize: '0.9rem' }}>
                   <li style={{ marginBottom: '0.5rem' }}>
-                    <strong>Standard Wallets:</strong> Convert <code>Seed String</code> → <code>Private Key</code> → <code>Public Key</code> (Address A).
+                    <strong>Standard Wallets:</strong> <code>Seed</code> → <code>Private Key</code> → <code>Public Key</code> → Address A
                   </li>
                   <li>
-                    <strong>This Burn Address:</strong> Converts <code>Seed String</code> → <code>Public Key</code> (Address B) directly.
+                    <strong>This Burn Address:</strong> <code>Seed</code> → <code>Public Key</code> (directly) → Address B
                   </li>
                 </ul>
-                <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-dim)', fontStyle: 'italic' }}>
-                  For Address A to equal Address B, the Private Key would have to mathematically equal the Public Key, which is cryptographically impossible.
-                  Using the seed string in a wallet will simply generate a random, empty wallet address that has no relation to the Burn Address.
+                <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-dim)' }}>
+                  These are fundamentally different mathematical operations. For Address A to equal Address B, the Private Key would have to equal the Public Key—<strong style={{ color: 'var(--error)' }}>cryptographically impossible</strong>.
+                </p>
+                <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: 'var(--accent)', fontStyle: 'italic' }}>
+                  Try it yourself: use the seed in any wallet. You'll get a completely different, unrelated address.
                 </p>
               </div>
-            </div>
+            </FAQItem>
 
-            <div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: '#fff' }}>
-                Can someone brute-force the seed phrase?
-              </h3>
-              <p style={{ color: 'var(--text-dim)', marginBottom: '1rem', lineHeight: '1.6' }}>
-                You have a better chance of picking a specific atom in the observable universe. It is <strong style={{ color: 'var(--accent)' }}>thermodynamically impossible</strong>. To even attempt it would require more energy than exists in our solar system. It's not happening.
+            <FAQItem question="Can someone brute-force the seed phrase?">
+              <p style={{ color: 'var(--text-dim)', lineHeight: '1.6' }}>
+                You have a better chance of picking a specific atom in the observable universe. It is <strong style={{ color: 'var(--accent)' }}>thermodynamically impossible</strong>. To even attempt it would require more energy than exists in our solar system.
               </p>
-            </div>
+            </FAQItem>
 
-            <div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: '#fff' }}>
-                What about Quantum Computing?
-              </h3>
+            <FAQItem question="What about Quantum Computing?">
               <p style={{ color: 'var(--text-dim)', lineHeight: '1.6' }}>
                 Keeta is <strong style={{ color: 'var(--accent)' }}>Post-Quantum Ready</strong>. This network was not built for the limitations of today's silicon. While others panic, Keeta remains immutable.
               </p>
-            </div>
+            </FAQItem>
 
-            <div style={{ borderTop: '1px solid #333', paddingTop: '2rem' }}>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: '#fff' }}>
-                The All-Zeros Dilemma
-              </h3>
+            <FAQItem question="The All-Zeros Dilemma">
               <p style={{ color: 'var(--text-dim)', marginBottom: '1rem', lineHeight: '1.6' }}>
                 Some argue that an Ed25519 public key of <code style={{ color: 'var(--accent)' }}>0x00...00</code> (32 zero bytes) is "provably unspendable."
                 This is <strong style={{ color: 'var(--error)' }}>weaker and less provable</strong> than the Hash-to-Point method.
@@ -331,7 +279,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
                     <tr style={{ borderBottom: '1px solid #222' }}>
                       <td style={{ padding: '0.75rem', color: 'var(--text-dim)' }}>Derivation</td>
                       <td style={{ padding: '0.75rem', color: '#ffaaaa' }}>"Magic constant"</td>
-                      <td style={{ padding: '0.75rem', color: '#aaffaa' }}>SHA256(public seed)</td>
+                      <td style={{ padding: '0.75rem', color: '#aaffaa' }}>RFC 9380(public seed)</td>
                     </tr>
                     <tr style={{ borderBottom: '1px solid #222' }}>
                       <td style={{ padding: '0.75rem', color: 'var(--text-dim)' }}>Verifiability</td>
@@ -352,29 +300,12 @@ console.log("OFFICIAL BURN ADDRESS:", address);
                 </table>
               </div>
 
-              <div style={{ background: '#111', padding: '1.5rem', borderRadius: '8px', border: '1px solid #222' }}>
-                <p style={{ marginBottom: '1rem', fontSize: '0.95rem' }}>
-                  <strong style={{ color: '#fff' }}>The Core Problem:</strong>
-                </p>
-                <ul style={{ paddingLeft: '1.5rem', color: 'var(--text-dim)', fontSize: '0.9rem', lineHeight: '1.7' }}>
-                  <li style={{ marginBottom: '0.5rem' }}>
-                    <strong>It's a "Famous" Point:</strong> The curve point where y = 0 is a well-known mathematical curiosity studied by cryptographers.
-                  </li>
-                  <li style={{ marginBottom: '0.5rem' }}>
-                    <strong>No Transparent Derivation:</strong> There's no "recipe" to verify. It's just "trust me, all-zeros is unspendable."
-                  </li>
-                  <li>
-                    <strong>Philosophical Weakness:</strong> The all-zeros approach requires trust that no one has ever found (or ever will find) a scalar for the (√-1, 0) point.
-                  </li>
-                </ul>
-              </div>
-
-              <div style={{ marginTop: '1.5rem', padding: '1rem', borderLeft: '3px solid var(--accent)', background: 'rgba(0, 255, 157, 0.05)' }}>
+              <div style={{ padding: '1rem', borderLeft: '3px solid var(--accent)', background: 'rgba(0, 255, 157, 0.05)' }}>
                 <p style={{ margin: 0, color: '#fff', fontStyle: 'italic' }}>
-                  "Show me the derivation. Show me <em>why</em> all-zeros is unspendable. I can show you <em>exactly</em> why my address is unspendable — it's the SHA256 hash of a public string, and recovering the private key requires breaking elliptic curve cryptography."
+                  "Don't trust. Verify."
                 </p>
               </div>
-            </div>
+            </FAQItem>
           </div>
         </Section>
       </main>

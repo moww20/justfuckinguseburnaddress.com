@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@keetanetwork/keetanet-client": "^0.14.12",
+    "@noble/curves": "^2.0.1",
+    "@noble/hashes": "^2.0.1",
     "bech32": "^2.0.0",
     "framer-motion": "^12.23.26",
     "lucide-react": "^0.562.0",

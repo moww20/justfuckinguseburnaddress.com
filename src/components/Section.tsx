@@ -10,10 +10,10 @@ interface SectionProps {
 export function Section({ title, children, delay = 0 }: SectionProps) {
     return (
         <motion.section
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ duration: 0.25, delay: delay * 0.3 }}
             style={{ marginBottom: '4rem' }}
         >
             {title && (

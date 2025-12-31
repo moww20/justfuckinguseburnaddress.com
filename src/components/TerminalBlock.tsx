@@ -6,9 +6,10 @@ interface TerminalBlockProps {
     content: string;
     language?: string;
     allowCopy?: boolean;
+    maxHeight?: string;
 }
 
-export function TerminalBlock({ label = 'bash', content, allowCopy = true }: TerminalBlockProps) {
+export function TerminalBlock({ label = 'bash', content, allowCopy = true, maxHeight }: TerminalBlockProps) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
@@ -63,7 +64,7 @@ export function TerminalBlock({ label = 'bash', content, allowCopy = true }: Ter
                     </button>
                 )}
             </div>
-            <div style={{ padding: '1rem', overflowX: 'auto', color: 'var(--text-main)' }}>
+            <div style={{ padding: '1rem', overflowX: 'auto', overflowY: maxHeight ? 'auto' : 'visible', maxHeight: maxHeight || 'none', color: 'var(--text-main)' }}>
                 <pre style={{ margin: 0 }}>
                     <code>{content}</code>
                 </pre>
