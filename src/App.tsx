@@ -26,44 +26,58 @@ function App() {
 (async () => {
   console.log("🔐 Loading cryptographic libraries...");
   
-  // Load libraries from CDN (Pinned versions for reproducibility)
+  // 1. Load libraries from CDN (Pinned versions for reproducibility)
   const { hashToCurve } = await import("https://esm.sh/@noble/curves@1.8.1/ed25519");
   const { bytesToHex } = await import("https://esm.sh/@noble/hashes@1.7.1/utils");
   const keetaMod = await import("https://esm.sh/@keetanetwork/keetanet-client@0.14.12");
   const lib = keetaMod.default.lib;
   
+  // 2. Constants (The "Source of Truth")
   const SEED = "${BURN_CONSTANTS.SEED}";
   const DST = "${BURN_CONSTANTS.DST}";
   const EXPECTED_POINT = "${BURN_CONSTANTS.EXPECTED_POINT_HEX}";
   const EXPECTED_ADDRESS = "${BURN_CONSTANTS.EXPECTED_ADDRESS}";
+
+  // 3. Output Styles (Visuals)
+  const styles = {
+    title: 'color: #00ff9d; font-weight: 800; font-size: 18px; padding: 10px 0;',
+    header: 'color: #00ff9d; font-weight: bold; font-size: 14px; margin-top: 10px;',
+    section: 'color: #79c0ff; font-weight: bold; font-size: 13px; margin-top: 5px;',
+    label: 'color: #8b949e; font-family: monospace;',
+    value: 'color: #e6edf3; font-family: monospace; font-weight: bold;',
+    success: 'color: #2ea043; font-weight: bold; font-size: 13px;',
+    separator: 'color: #30363d; font-weight: bold;',
+    icon: 'font-size: 14px; margin-right: 5px;'
+  };
   
-  console.log("\\n============================================");
-  console.log("  KEETA BURN ADDRESS DERIVATION PROOF");
-  console.log("============================================\\n");
+  console.clear();
+  console.log("\\n%cKEETA BURN ADDRESS DERIVATION PROOF%c\\nOfficial RFC 9380 Verification", styles.title, "color: #8b949e; font-size: 11px; font-weight: normal; display: block; margin-top: -5px;");
   
   // STEP 1: Seed
-  console.log("STEP 1: Seed String");
-  console.log("─────────────────────────────────────────");
-  console.log("Input:", SEED);
+  console.log("%cSTEP 1: Seed Input", styles.header);
+  console.log("%c─────────────────────────────────────────", styles.separator);
+  console.log("%cInput:%c " + SEED, styles.label, styles.value);
   
   // STEP 2: RFC 9380 Hash-to-Curve
-  console.log("\\nSTEP 2: RFC 9380 Hash-to-Curve (Elligator2)");
-  console.log("─────────────────────────────────────────");
-  console.log("Suite: edwards25519_XMD:SHA-512_ELL2_RO_");
-  console.log("DST:   " + DST);
+  console.log("\\n%cSTEP 2: RFC 9380 Hash-to-Curve (Elligator2)", styles.header);
+  console.log("%c─────────────────────────────────────────", styles.separator);
+  console.log("%cSuite:%c edwards25519_XMD:SHA-512_ELL2_RO_", styles.label, styles.value);
+  console.log("%cDST:  %c " + DST, styles.label, styles.value);
   
   const encoder = new TextEncoder();
   const point = hashToCurve(encoder.encode(SEED), { DST });
   const curvePointBytes = point.toRawBytes();
   const curvePointHex = bytesToHex(curvePointBytes);
-  console.log("Output:  ", curvePointHex);
-  console.log("Expected:", EXPECTED_POINT);
-  console.log("Match:", curvePointHex === EXPECTED_POINT ? "✅" : "❌");
+  console.log("%cOutput:  %c" + curvePointHex, styles.label, styles.value);
+  console.log("%cExpected:%c" + EXPECTED_POINT, styles.label, styles.value);
+  
+  const match1 = curvePointHex === EXPECTED_POINT;
+  console.log(match1 ? "%c✅ Match Verified" : "%c❌ Mismatch", match1 ? styles.success : "color: red");
   
   // STEP 3: Keeta Address Encoding
-  console.log("\\nSTEP 3: Keeta Address Encoding (SDK)");
-  console.log("─────────────────────────────────────────");
-  console.log("Format: Ed25519 Compressed (Little-Endian)");
+  console.log("\\n%cSTEP 3: Keeta Address Encoding (SDK)", styles.header);
+  console.log("%c─────────────────────────────────────────", styles.separator);
+  console.log("%cFormat:%c Ed25519 Compressed (Little-Endian)", styles.label, styles.value);
   
   const arrayBuffer = curvePointBytes.buffer.slice(
     curvePointBytes.byteOffset,
@@ -71,18 +85,21 @@ function App() {
   );
   const account = lib.Account.fromED25519PublicKey(arrayBuffer);
   const address = lib.Account.toPublicKeyString(account);
-  console.log("Output:  ", address);
-  console.log("Expected:", EXPECTED_ADDRESS);
-  console.log("Match:", address === EXPECTED_ADDRESS ? "✅" : "❌");
+  console.log("%cOutput:  %c" + address, styles.label, styles.value);
+  console.log("%cExpected:%c" + EXPECTED_ADDRESS, styles.label, styles.value);
+  
+  const match2 = address === EXPECTED_ADDRESS;
+  console.log(match2 ? "%c✅ Match Verified" : "%c❌ Mismatch", match2 ? styles.success : "color: red");
   
   // FINAL RESULT
-  console.log("\\n============================================");
-  console.log("  ✅ FULLY VERIFIED BURN ADDRESS:");
-  console.log("  " + address);
-  console.log("============================================");
-  console.log("\\n✓ No party possesses or can feasibly compute the private key");
-  console.log("✓ Tokens sent here are permanently locked");
-  console.log("✓ Verified using RFC 9380 + RFC 8032 standard");
+  console.log("\\n%cVERIFIED BURN ADDRESS:", styles.title);
+  console.log("%c" + address, "background: rgba(0, 255, 157, 0.1); color: #00ff9d; padding: 4px 8px; border-radius: 4px; border: 1px solid #00ff9d; font-weight: bold;");
+  
+  console.group("%cSecurity Properties", "color: #79c0ff; font-weight: bold; margin-top: 10px;");
+  console.log("%c✓%c No party possesses the private key", styles.success, "color: #e6edf3");
+  console.log("%c✓%c Tokens are permanently locked", styles.success, "color: #e6edf3");
+  console.log("%c✓%c Verified via RFC 9380 + RFC 8032", styles.success, "color: #e6edf3");
+  console.groupEnd();
 })();`;
 
   // File-based verification - simple one-liner using bun or npx
