@@ -12,9 +12,14 @@ function App() {
 # Output: 5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533`;
 
 
+  const powershellVerify = `$Algorithm = [System.Security.Cryptography.HashAlgorithm]::Create("SHA256")
+$Bytes = [System.Text.Encoding]::UTF8.GetBytes("KEETA_BURN_FUCKING_ADDRESS")
+$Hash = $Algorithm.ComputeHash($Bytes)
+[BitConverter]::ToString($Hash).Replace("-", "").ToLower()
+# Output: 5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533`;
 
   const sdkVerify = `
-import * as Anchor from "@keetanetwork/anchor";
+import { lib } from "@keetanetwork/keetanet-client";
 import { createHash } from "node:crypto";
 
 const SEED = "KEETA_BURN_FUCKING_ADDRESS";
@@ -25,10 +30,12 @@ const hashHex = hash.toString('hex');
 console.log(\`SHA256 Hash: 0x\${hashHex}\`);
 
 // 2. Derive Keeta Address
-// Using SDK to ensure strict network-compatible encoding
 const bytes = new Uint8Array(hash);
-const account = Anchor.KeetaNet.lib.Account.fromED25519PublicKey(bytes);
-const address = account.publicKeyString.get();
+// Convert to ArrayBuffer for strict type compliance
+const arrayBuffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+
+const account = lib.Account.fromED25519PublicKey(arrayBuffer);
+const address = lib.Account.toPublicKeyString(account);
 
 console.log("OFFICIAL BURN ADDRESS:", address);
 // Output: keeta_afpfix3n6l2yuz3yucngbtwdqfd4ufwsnetv5ejawhb6akkmdssth3xh4vhhg
@@ -71,7 +78,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
         transition={{ delay: 0.6, duration: 0.8 }}
         style={{ maxWidth: '600px', margin: '-4rem auto 6rem auto' }}
       >
-        <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)', textAlign: 'left' }}>Keeta Address (Official Bech32)</h3>
+        <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)', textAlign: 'left' }}>Keeta Burn Fucking Address (Bech32)</h3>
         <TerminalBlock label="ADDRESS" content={address} />
       </motion.div>
 
@@ -111,7 +118,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>SHA256 Hash (Hex)</h3>
           <TerminalBlock label="hex" content={hashHex} />
 
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Keeta Address (Official Bech32)</h3>
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Keeta Burn Fucking Address (Bech32)</h3>
           <TerminalBlock label="address" content={address} />
         </Section>
 
@@ -121,7 +128,16 @@ console.log("OFFICIAL BURN ADDRESS:", address);
           </p>
 
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-dim)' }}>1. Verify Hash (Command Line)</h3>
-          <TerminalBlock label="bash" content={bashVerify} />
+
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h4 style={{ fontSize: '0.85rem', color: 'var(--text-dim)', marginBottom: '0.5rem', opacity: 0.7 }}>On Linux / macOS</h4>
+            <TerminalBlock label="bash" content={bashVerify} />
+          </div>
+
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h4 style={{ fontSize: '0.85rem', color: 'var(--text-dim)', marginBottom: '0.5rem', opacity: 0.7 }}>On Windows (PowerShell)</h4>
+            <TerminalBlock label="powershell" content={powershellVerify} />
+          </div>
 
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '1.5rem', color: 'var(--text-dim)' }}>2. Verify Address Encoding (SDK Script)</h3>
           <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
