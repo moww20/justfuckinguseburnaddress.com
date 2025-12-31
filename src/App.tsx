@@ -105,7 +105,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
       </motion.div>
 
       <main>
-        <Section title="Purpose" delay={0.2}>
+        <Section title="The Rationale" delay={0.2}>
           <div style={{ display: 'grid', gap: '2rem' }}>
             <div>
               <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: 'var(--text-dim)' }}>The Problem</h3>
