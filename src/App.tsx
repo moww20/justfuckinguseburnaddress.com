@@ -77,7 +77,7 @@ function App() {
   console.log("  ✅ FULLY VERIFIED BURN ADDRESS:");
   console.log("  " + address);
   console.log("============================================");
-  console.log("\\n✓ No known private key exists");
+  console.log("\\n✓ No party possesses or can feasibly compute the private key");
   console.log("✓ Tokens sent here are permanently locked");
   console.log("✓ Verified using RFC 9380 + RFC 8032 standard");
 })();`;
@@ -208,10 +208,10 @@ function App() {
         <Section title="Security Proof" delay={0.6}>
           <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gap: '1rem' }}>
             {[
-              { title: "RFC 9380 Guarantee", desc: "The Elligator2 algorithm guarantees the output is a valid Ed25519 curve point (with cofactor clearing). This is IETF-standardized, not ad-hoc." },
+              { title: "RFC 9380 Guarantee", desc: "The Elligator2 algorithm guarantees the output is a valid Ed25519 curve point in the prime-order subgroup (with cofactor clearing). This is IETF-standardized, not ad-hoc." },
               { title: "Determinism", desc: `The curve point is derived solely from the public string "${seedString}".` },
-              { title: "Discrete Log Hardness", desc: "Finding a private key (Ed25519 scalar) that produces this public point requires solving the discrete logarithm problem—computationally infeasible." },
-              { title: "Collision Resistance", desc: "Finding another input that produces the same curve point is blocked by SHA-512's ~256-bit collision resistance within the hash-to-curve construction." }
+              { title: "Discrete Log Hardness", desc: "Finding a private key (Ed25519 scalar) that produces this public point requires solving the discrete logarithm problem—computationally infeasible (~2¹²⁶ operations)." },
+              { title: "Collision Resistance", desc: "The hash-to-curve construction provides ~128-bit security against finding two distinct inputs that map to the same curve point (birthday bound)." }
             ].map((item, i) => (
               <li key={i} style={{ padding: '1.5rem', background: '#111', border: '1px solid #222', borderRadius: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
@@ -223,7 +223,7 @@ function App() {
             ))}
           </ul>
           <div style={{ marginTop: '2rem', textAlign: 'center', padding: '1rem', border: '1px dashed var(--accent)', borderRadius: '8px', color: '#fff', background: 'rgba(0, 255, 157, 0.05)' }}>
-            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>RESULT:</span> No known private key exists. No one can spend from this address. Tokens sent here are <strong>permanently and irrevocably locked</strong>.
+            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>RESULT:</span> No party possesses or can feasibly compute the private key. Tokens sent here are <strong>permanently and irrevocably locked</strong>.
           </div>
         </Section>
 

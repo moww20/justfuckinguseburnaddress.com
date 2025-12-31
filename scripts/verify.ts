@@ -10,7 +10,7 @@ import { lib } from '@keetanetwork/keetanet-client';
  * - Hash-to-Curve: RFC 9380
  * - Suite: edwards25519_XMD:SHA-512_ELL2_RO_
  * - DST: "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_"
- * - Library: @noble/curves@2.0.x (verified compatible with 1.8.x)
+ * - Library: @noble/curves@1.8.1 (pinned for reproducibility)
  */
 
 const SEED = 'KEETA_BURN_FUCKING_ADDRESS';
@@ -37,12 +37,11 @@ console.log('Output:  ', curvePointHex);
 console.log('Expected:', EXPECTED_POINT);
 console.log('Match:   ', curvePointHex === EXPECTED_POINT ? '✅' : '❌');
 
-// STEP 2: Byte Layout & Endianness Verification
-console.log('\nSTEP 2: Byte Layout Verification');
-const isLittleEndian = (curvePointBytes[0] & 0x01) === 0;
+// STEP 2: Point Format Verification
+console.log('\nSTEP 2: Point Format Verification');
 console.log('Format:   Ed25519 Compressed (32 bytes)');
-console.log('Order:    Little-Endian (RFC 8032 standard)');
-console.log('Check:    Endianness bit consistency:', isLittleEndian ? 'OK' : 'OK (Point-specific)');
+console.log('Encoding: Little-Endian Y-coordinate + X sign bit (RFC 8032)');
+console.log('Length:  ', curvePointBytes.length, 'bytes', curvePointBytes.length === 32 ? '✅' : '❌');
 
 // STEP 3: Keeta Address Encoding
 console.log('\nSTEP 3: Keeta Address Encoding');
