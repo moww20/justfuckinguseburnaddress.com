@@ -65,6 +65,16 @@ console.log("OFFICIAL BURN ADDRESS:", address);
         </motion.p>
       </header>
 
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.8 }}
+        style={{ maxWidth: '600px', margin: '-4rem auto 6rem auto' }}
+      >
+        <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)', textAlign: 'left' }}>Keeta Address (Official Bech32)</h3>
+        <TerminalBlock label="ADDRESS" content={address} />
+      </motion.div>
+
       <main>
         <Section title="Purpose" delay={0.2}>
           <p style={{ marginBottom: '1.5rem', fontSize: '1.1rem' }}>
