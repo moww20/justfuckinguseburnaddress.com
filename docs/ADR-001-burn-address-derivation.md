@@ -72,7 +72,7 @@ X-coordinate sign bit: 0 (positive)
 ```
 Prefix: "keeta_a"
 Payload: Ed25519 compressed point (32 bytes)
-Encoding: Bech32-inspired custom encoding
+Encoding: Keeta Address Encoding
 Final: keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56
 ```
 

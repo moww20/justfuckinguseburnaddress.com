@@ -11,12 +11,14 @@ const XIcon = () => (
   </svg>
 );
 
+import { BURN_CONSTANTS } from './lib/burn-address';
+
 function App() {
-  const seedString = 'KEETA_BURN_FUCKING_ADDRESS';
+  const seedString = BURN_CONSTANTS.SEED;
 
   // RFC 9380 Hash-to-Curve derived address (no known private key)
-  const curvePointHex = 'e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec';
-  const address = 'keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56';
+  const curvePointHex = BURN_CONSTANTS.EXPECTED_POINT_HEX;
+  const address = BURN_CONSTANTS.EXPECTED_ADDRESS;
 
   // Browser console verification script - FULL end-to-end verification
   const consoleVerifyScript = `// Paste this in your browser's Developer Console (F12)
@@ -30,10 +32,10 @@ function App() {
   const keetaMod = await import("https://esm.sh/@keetanetwork/keetanet-client@0.14.12");
   const lib = keetaMod.default.lib;
   
-  const SEED = "KEETA_BURN_FUCKING_ADDRESS";
-  const DST = "KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_";
-  const EXPECTED_POINT = "e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec";
-  const EXPECTED_ADDRESS = "keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56";
+  const SEED = "${BURN_CONSTANTS.SEED}";
+  const DST = "${BURN_CONSTANTS.DST}";
+  const EXPECTED_POINT = "${BURN_CONSTANTS.EXPECTED_POINT_HEX}";
+  const EXPECTED_ADDRESS = "${BURN_CONSTANTS.EXPECTED_ADDRESS}";
   
   console.log("\\n============================================");
   console.log("  KEETA BURN ADDRESS DERIVATION PROOF");

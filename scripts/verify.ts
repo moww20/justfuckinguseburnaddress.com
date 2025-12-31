@@ -13,10 +13,14 @@ import { lib } from '@keetanetwork/keetanet-client';
  * - Library: @noble/curves@1.8.1 (pinned for reproducibility)
  */
 
-const SEED = 'KEETA_BURN_FUCKING_ADDRESS';
-const DST = 'KEETA_BURN_ADDRESS-with-edwards25519_XMD:SHA-512_ELL2_RO_';
-const EXPECTED_POINT = 'e0bcb4e0e1a95b1a9c9abc353d6cac9146c59c3007292cc7b1af4730588f06ec';
-const EXPECTED_ADDRESS = 'keeta_ahqlznha4guvwgu4tk6dkplmvsiunrm4gadsslghwgxuomcyr4doyqqzqxc56';
+import { BURN_CONSTANTS } from '../src/lib/burn-address';
+
+
+
+const SEED = BURN_CONSTANTS.SEED;
+const DST = BURN_CONSTANTS.DST;
+const EXPECTED_POINT = BURN_CONSTANTS.EXPECTED_POINT_HEX;
+const EXPECTED_ADDRESS = BURN_CONSTANTS.EXPECTED_ADDRESS;
 
 console.log('\n============================================');
 console.log('  KEETA BURN ADDRESS DERIVATION PROOF');
