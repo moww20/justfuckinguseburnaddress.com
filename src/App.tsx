@@ -41,6 +41,21 @@ console.log("OFFICIAL BURN ADDRESS:", address);
 // Output: keeta_afpfix3n6l2yuz3yucngbtwdqfd4ufwsnetv5ejawhb6akkmdssth3xh4vhhg
 `;
 
+  // Browser console script - zero setup, uses Web Crypto API
+  const consoleVerify = `// Paste this in your browser's Developer Console (F12)
+(async () => {
+  const SEED = "KEETA_BURN_FUCKING_ADDRESS";
+  const encoder = new TextEncoder();
+  const data = encoder.encode(SEED);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  
+  console.log("Seed:", SEED);
+  console.log("SHA256 Hash:", hashHex);
+  console.log("Expected:    5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533");
+  console.log("Match:", hashHex === "5e545f6df2f58a6778a09a60cec38147ca16d269275e9120b1c3e0294c1ca533" ? "✅ YES" : "❌ NO");
+})();`;
   return (
     <div className="manifesto-container">
       <header style={{ marginBottom: '6rem', textAlign: 'center', marginTop: '2rem' }}>
@@ -68,7 +83,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
           transition={{ delay: 0.4, duration: 0.8 }}
           style={{ color: 'var(--text-dim)', fontSize: '1.1rem', maxWidth: '500px', margin: '0 auto' }}
         >
-          The cryptographic derivation of the Keeta Launchpad Dead Wallet.
+          The cryptographic derivation of the Keeta Network Dead Wallet.
         </motion.p>
       </header>
 
@@ -140,9 +155,15 @@ console.log("OFFICIAL BURN ADDRESS:", address);
             <TerminalBlock label="powershell" content={powershellVerify} />
           </div>
 
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '1.5rem', color: 'var(--text-dim)' }}>2. Verify Address Encoding (SDK Script)</h3>
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '1.5rem', color: 'var(--text-dim)' }}>2. Verify Hash in Browser Console (Zero Setup)</h3>
           <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
-            Save this script to a file (e.g., <code>verify.ts</code>) and run it with a TypeScript runtime (e.g., <code>npx tsx verify.ts</code>) to confirm the hash maps to the address.
+            Open your browser's Developer Tools (F12), go to the <strong>Console</strong> tab, and paste this script. It uses the built-in Web Crypto API—no installation required.
+          </p>
+          <TerminalBlock label="javascript" content={consoleVerify} />
+
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', marginTop: '2rem', color: 'var(--text-dim)' }}>3. Full Verification with SDK (Optional)</h3>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>
+            For complete verification including Bech32 encoding, save this to a file (e.g., <code>verify.ts</code>) and run with <code>npx tsx verify.ts</code>.
           </p>
           <TerminalBlock label="typescript" content={sdkVerify} />
         </Section>
@@ -200,7 +221,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
       </main>
 
       <footer style={{ marginTop: '8rem', textAlign: 'center', color: 'var(--text-dim)', fontSize: '0.875rem', paddingBottom: '4rem' }}>
-        <p style={{ opacity: 0.5 }}>KEETA LAUNCHPAD &bull; PROVABLE BURN v1</p>
+        <p style={{ opacity: 0.5 }}>KEETA NETWORK &bull; PROVABLE BURN v1</p>
       </footer>
     </div >
   );
