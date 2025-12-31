@@ -1,7 +1,14 @@
 import { motion } from 'framer-motion';
-import { ShieldCheck, Lock } from 'lucide-react';
+import { ShieldCheck, Lock, Github, ExternalLink } from 'lucide-react';
 import { Section } from './components/Section';
 import { TerminalBlock } from './components/TerminalBlock';
+
+// X.com icon (not in lucide-react)
+const XIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 function App() {
   const seedString = 'KEETA_BURN_FUCKING_ADDRESS';
@@ -221,6 +228,36 @@ console.log("OFFICIAL BURN ADDRESS:", address);
       </main>
 
       <footer style={{ marginTop: '8rem', textAlign: 'center', color: 'var(--text-dim)', fontSize: '0.875rem', paddingBottom: '4rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginBottom: '1.5rem' }}>
+          <a
+            href="https://github.com/moww20/justfuckinguseburnaddress.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'var(--text-dim)', transition: 'color 0.2s' }}
+            title="View Source on GitHub"
+          >
+            <Github size={20} />
+          </a>
+          <a
+            href="https://x.com/trdrmorz"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'var(--text-dim)', transition: 'color 0.2s' }}
+            title="Follow on X"
+          >
+            <XIcon />
+          </a>
+          <a
+            href="https://github.com/KeetaNetwork/keetanet-client"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: '0.25rem', transition: 'color 0.2s' }}
+            title="Keeta Network SDK"
+          >
+            <ExternalLink size={16} />
+            <span style={{ fontSize: '0.75rem' }}>SDK</span>
+          </a>
+        </div>
         <p style={{ opacity: 0.5 }}>KEETA NETWORK &bull; PROVABLE BURN v1</p>
       </footer>
     </div >
