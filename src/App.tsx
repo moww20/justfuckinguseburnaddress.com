@@ -205,7 +205,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
             ))}
           </ul>
           <div style={{ marginTop: '2rem', textAlign: 'center', padding: '1rem', border: '1px dashed var(--accent)', borderRadius: '8px', color: '#fff', background: 'rgba(0, 255, 157, 0.05)' }}>
-            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>CONCLUSION:</span> No one holds the private key. Tokens are permanently locked.
+            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>CONCLUSION:</span> No one holds the private key. Tokens and Ownership are mathematically locked forever.
           </div>
         </Section>
 
