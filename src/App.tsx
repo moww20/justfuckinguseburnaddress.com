@@ -284,7 +284,10 @@ console.log("OFFICIAL BURN ADDRESS:", address);
             <XIcon />
           </a>
         </div>
-        <p style={{ opacity: 0.5 }}>KEETA BURN FUCKING ADDRESS v1</p>
+        <p style={{ opacity: 0.5, marginBottom: '0.5rem' }}>KEETA BURN FUCKING ADDRESS v1</p>
+        <p style={{ opacity: 0.3, fontSize: '0.8rem' }}>
+          by <a href="https://keythings.xyz/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Keythings Wallet</a>
+        </p>
       </footer>
     </div >
   );
