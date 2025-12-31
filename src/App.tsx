@@ -251,7 +251,7 @@ console.log("OFFICIAL BURN ADDRESS:", address);
                 What about Quantum Computing?
               </h3>
               <p style={{ color: 'var(--text-dim)', lineHeight: '1.6' }}>
-                Keeta is <strong style={{ color: 'var(--accent)' }}>Post-Quantum Ready</strong>. We didn't build this network for the limitations of today's silicon. While others panic, we remain immutable.
+                Keeta is <strong style={{ color: 'var(--accent)' }}>Post-Quantum Ready</strong>. This network was not built for the limitations of today's silicon. While others panic, Keeta remains immutable.
               </p>
             </div>
           </div>
