@@ -12,6 +12,9 @@ console.log('\n============================================');
 console.log('  KEETA BURN ADDRESS DERIVATION PROOF');
 console.log('============================================\n');
 
+console.log('INPUT SEED:');
+console.log(`  "${SEED}"\n`);
+
 // STEP 1: RFC 9380 Hash-to-Curve
 console.log('STEP 1: RFC 9380 Hash-to-Curve');
 const point = ed25519_hasher.hashToCurve(new TextEncoder().encode(SEED));
