@@ -203,23 +203,25 @@ console.log("OFFICIAL BURN ADDRESS:", address);
               </button>
             </div>
 
-            {activeTab === 'windows' ? (
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <TerminalBlock label="powershell" content={powershellVerify} />
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <TerminalBlock label="bash" content={bashVerify} />
-              </motion.div>
-            )}
+            <div style={{ minHeight: '180px' }}>
+              {activeTab === 'windows' ? (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <TerminalBlock label="powershell" content={powershellVerify} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <TerminalBlock label="bash" content={bashVerify} />
+                </motion.div>
+              )}
+            </div>
           </div>
 
           <div style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--accent)', borderRadius: '12px', background: 'rgba(0, 255, 157, 0.03)', position: 'relative' }}>
