@@ -170,7 +170,7 @@ function App() {
           <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Ed25519 Curve Point (RFC 9380)</h3>
           <TerminalBlock label="curve point" content={curvePointHex} />
 
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Keeta Burn Fucking Address (Bech32)</h3>
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>Keeta Burn Fucking Address</h3>
           <TerminalBlock label="address" content={address} />
         </Section>
 
@@ -217,7 +217,7 @@ function App() {
             ))}
           </ul>
           <div style={{ marginTop: '2rem', textAlign: 'center', padding: '1rem', border: '1px dashed var(--accent)', borderRadius: '8px', color: '#fff', background: 'rgba(0, 255, 157, 0.05)' }}>
-            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>CONCLUSION:</span> No one holds the private key. Tokens and Ownership are mathematically locked forever.
+            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>RESULT:</span> No private key exists. No one can spend from this address. Tokens sent here are <strong>permanently and irrevocably locked</strong>.
           </div>
         </Section>
 
