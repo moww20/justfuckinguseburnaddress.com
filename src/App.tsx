@@ -236,6 +236,24 @@ console.log("OFFICIAL BURN ADDRESS:", address);
                 </p>
               </div>
             </div>
+
+            <div>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: '#fff' }}>
+                Can someone brute-force the seed phrase?
+              </h3>
+              <p style={{ color: 'var(--text-dim)', marginBottom: '1rem', lineHeight: '1.6' }}>
+                You have a better chance of picking a specific atom in the observable universe. It is <strong style={{ color: 'var(--accent)' }}>thermodynamically impossible</strong>. To even attempt it would require more energy than exists in our solar system. It's not happening.
+              </p>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', color: '#fff' }}>
+                What about Quantum Computing?
+              </h3>
+              <p style={{ color: 'var(--text-dim)', lineHeight: '1.6' }}>
+                Keeta is <strong style={{ color: 'var(--accent)' }}>Post-Quantum Ready</strong>. We didn't build this network for the limitations of today's silicon. While others panic, we remain immutable.
+              </p>
+            </div>
           </div>
         </Section>
       </main>
