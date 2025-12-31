@@ -264,9 +264,19 @@ function App() {
               <p style={{ color: 'var(--text-dim)', lineHeight: '1.6', marginBottom: '1rem' }}>
                 Ed25519—like all elliptic curve cryptography—is <strong style={{ color: 'var(--error)' }}>theoretically vulnerable</strong> to Shor's algorithm on a sufficiently powerful quantum computer.
               </p>
-              <p style={{ color: 'var(--text-dim)', lineHeight: '1.6' }}>
+              <p style={{ color: 'var(--text-dim)', lineHeight: '1.6', marginBottom: '1rem' }}>
                 However, such computers don't exist yet. If quantum computing matures to that level, the <strong style={{ color: '#fff' }}>entire Keeta Network</strong> (and all Ed25519-based systems) would require cryptographic migration—this burn address would be just one of many concerns.
               </p>
+              <div style={{ padding: '1rem', borderLeft: '3px solid var(--accent)', background: 'rgba(0, 255, 157, 0.05)', marginTop: '1rem' }}>
+                <p style={{ margin: 0, color: 'var(--text-dim)', fontSize: '0.95rem', lineHeight: '1.6' }}>
+                  <strong style={{ color: 'var(--accent)' }}>Keeta is PQC-Ready:</strong> Keeta Network is extensible to support additional cryptographic algorithms and can be migrated to fully support post-quantum cryptography (PQC), including deprecating all algorithms which are not post-quantum cryptography.
+                </p>
+                <p style={{ margin: '0.75rem 0 0 0' }}>
+                  <a href="https://docs.keeta.com/security/post-quantum-readiness" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline', fontSize: '0.9rem' }}>
+                    Read Keeta's Post-Quantum Readiness →
+                  </a>
+                </p>
+              </div>
             </FAQItem>
 
             <FAQItem question="The All-Zeros Dilemma">
